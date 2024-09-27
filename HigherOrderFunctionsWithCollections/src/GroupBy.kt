@@ -5,13 +5,15 @@
  *
  * Note: If you only need to split a list in two, an alternative is the partition() function.
  */
-val groupedMenu = CookieRepository.cookies.groupBy { it.softBaked }
+val groupedMenu = ListRepository.cookies.groupBy { it.softBaked }
 
 val softBakedMenu = groupedMenu[true] ?: emptyList()
 val crunchyMenu = groupedMenu[false] ?: emptyList()
 
 data class CookieKey(val softBaked: Boolean, val hasFilling: Boolean)
-val groupedByObject = CookieRepository.cookies.groupBy { CookieKey(it.softBaked, it.hasFilling) }
+val groupedByObject = ListRepository.cookies.map { CookieKey(it.softBaked, it.hasFilling) }.groupBy { it }
+val cookieKeyTrue = groupedByObject[CookieKey(true, true)] ?: emptyList()
+val cookieKeyFalse = groupedByObject[CookieKey(false, false)] ?: emptyList()
 
 fun main() {
 
@@ -25,5 +27,21 @@ fun main() {
         println("${it.name} - $${it.price}")
     }
     println()
-    println(groupedByObject)
+    println("CookieKeyTrue")
+    cookieKeyTrue.forEachIndexed { index, cookie -> println("[$index] = $cookie") }
+    println()
+    println("CookieKeyFalse")
+    cookieKeyFalse.forEachIndexed { index, cookie -> println("[$index] = $cookie") }
+    println()
+
+    ListRepository.cookies.groupBy { it.price < 1.50 }.also {
+        val cheap = it[true] ?: emptyList()
+        val expensive = it[false] ?: emptyList()
+
+        println("Cookie cheap")
+        cheap.forEachIndexed { index, cookie -> println("[$index] = $cookie") }
+        println()
+        println("Cookie expensive")
+        expensive.forEachIndexed { index, cookie -> println("[$index] = $cookie") }
+    }
 }

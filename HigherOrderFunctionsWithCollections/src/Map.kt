@@ -13,17 +13,11 @@ val doubled = numbers.map { it * 2 }
 val names = listOf("Gui", "Ana", "Leo")
 val uppercasedNames = names.map { it.uppercase() }
 
-data class Person(val name: String, val age: Int)
-val people = listOf(
-    Person(name = "Gui", age = 28),
-    Person(name = "Ana", age = 25),
-    Person(name = "Leo", age = 30)
-)
+val people = ListRepository.people
+
 val peopleNames = people.map { it.name }
 val peopleDescription = people.map { "${it.name} is ${it.age} years old" }
 val olderPeople = people.map { Person(name = it.name, age = it.age + 1) }
-
-data class Employee(val name: String, val salary: Double)
 
 val employees = people.map { Employee(name = it.name, salary = it.age * 1000.0) }
 
